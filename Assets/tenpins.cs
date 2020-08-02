@@ -172,7 +172,10 @@ public class tenpins : MonoBehaviour
             else
                 audio.PlaySoundAtTransform("solve" + rnd.Range(1, 6), transform);
             foreach (Renderer r in pins)
+            {
+                r.gameObject.SetActive(true);
                 r.material.color = colors[6];
+            }
             bowlingBallRender.material.color = gray;
         }
     }
