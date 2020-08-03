@@ -14,10 +14,8 @@ MonoBehaviour:
   id: tenpins
   title: Tenpins
   author: TasThing
-  description: 'Nice Spare!
-
-
-    Module idea by Vincology, implementation by TasThing.'
+  description: "Nice Spare!\r\n\r\nModule idea by Vincology, implementation by TasThing.\r\n\r\nManual
+    HTML: https://ktane.timwi.de/HTML/Tenpins.html\r\nManual PDF: https://ktane.timwi.de/PDF/Tenpins.pdf"
   version: 
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 0e5c8dfc26492964d8d35c1109b368c0, type: 3}
