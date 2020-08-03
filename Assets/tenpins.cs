@@ -231,19 +231,28 @@ public class tenpins : MonoBehaviour
     };
 
     // Twitch Plays
-    /*#pragma warning disable 414
-    private readonly string TwitchHelpMessage = "!{0} press 10 [Presses the bowling ball when the seconds digits are 10.]";
+    #pragma warning disable 414
+    private readonly string TwitchHelpMessage = "Use !{0} press <seconds>. || Seconds are to be 0-59 inclusive.";
     #pragma warning restore 414
 
-    IEnumerator ProcessTwitchCommand(string input)
+    IEnumerator ProcessTwitchCommand(string command)
     {
-        Match m;
-        if ((m = Regex.Match(input, @"^\s*press\s+(\d)\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)).Success);
+        command = command.ToLowerInvariant().Trim();
+        Match m = Regex.Match(command, @"^(?:press (\d{1,2}))$");
+        if (m.Success)
         {
             yield return null;
             var value = int.Parse(m.Groups[1].Value);
-            while (((int) bomb.GetTime()) % 10 != value)
-                yield return "trycancel";
+            if (value >= 0 && value < 60) {
+                while ((int) bomb.GetTime() % 60 != value) {
+                    yield return null;
+                    yield return "trycancel";
+                };
+            }
+            else {
+                yield return "sendtochaterror Invalid time.";
+                yield break;
+            }
             bowlingBall.OnInteract();
         }
     }
@@ -252,9 +261,12 @@ public class tenpins : MonoBehaviour
     {
         while (!moduleSolved)
         {
-            while (!(((int) bomb.GetTime()) % 20 > min) || !(((int) bomb.GetTime()) % 20 < max) || (((int) bomb.GetTime()) % 10 == lastDigit))
+            yield return null;
+            while (!((int) bomb.GetTime() % 20 > min && ((int) bomb.GetTime()) % 20 < max && ((int) bomb.GetTime()) % 10 == lastDigit)) {
+                yield return true;
                 yield return null;
+            }
             bowlingBall.OnInteract();
-        }
-    }*/
+        }   
+    }
 }
