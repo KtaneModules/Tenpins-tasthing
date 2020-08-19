@@ -82,6 +82,12 @@ public class tenpins : MonoBehaviour
             if (splits[i] == 2 && mirrored[i])
                 mirrored[i] = false;
         }
+        splits[0] = 11;
+        splits[1] = 0;
+        splits[2] = 0;
+        stageOrder[0] = 0;
+        pivots[1] = 0;
+        pivots[2] = 1;
         var arrangementsPresent = new List<bool[]>();
         var orders = new List<int[]>();
         for (int i = 0; i < 3; i++)
@@ -151,12 +157,15 @@ public class tenpins : MonoBehaviour
                 lastDigit = digits[pivots[stageOrder[stage]]][splits[stageOrder[stage]]];
             else if (splits.Count(x => x == 11) == 1)
             {
-                var otherStages = Enumerable.Range(0, 3).Where(x => x != stage).ToArray();
-                var otherPivots = otherStages.Select(x => pivots[x]).ToArray();
-                if (pivots[otherStages[0]] == pivots[otherStages[1]])
-                    lastDigit = digits[pivots[stageOrder[otherStages[0]]]][11];
+                var otherPivots = pivots.Where((x, i) => i != Array.IndexOf(splits, 11)).ToArray();
+                if (otherPivots[0] == otherPivots[1])
+                    lastDigit = digits[otherPivots[0]][11];
+                else if (otherPivots.Contains(0) && otherPivots.Contains(1))
+                    lastDigit = 0;
+                else if (otherPivots.Contains(0) && otherPivots.Contains(2))
+                    lastDigit = 2;
                 else
-                    lastDigit = digits[Enumerable.Range(0, 3).First(x => !otherPivots.Contains(x))][11];
+                    lastDigit = 4;
             }
             else
                 lastDigit = digits[stageOrder[stage]][11];
@@ -267,6 +276,6 @@ public class tenpins : MonoBehaviour
                 yield return null;
             }
             bowlingBall.OnInteract();
-        }   
+        }
     }
 }

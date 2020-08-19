@@ -2078,7 +2078,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleType: tenpins
   ModuleDisplayName: Tenpins
-  RequiresTimerVisibility: 0
+  RequiresTimerVisibility: 1
 --- !u!114 &114221143902937164
 MonoBehaviour:
   m_ObjectHideFlags: 1
