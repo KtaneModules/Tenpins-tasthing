@@ -82,12 +82,6 @@ public class tenpins : MonoBehaviour
             if (splits[i] == 2 && mirrored[i])
                 mirrored[i] = false;
         }
-        splits[0] = 11;
-        splits[1] = 0;
-        splits[2] = 0;
-        stageOrder[0] = 0;
-        pivots[1] = 0;
-        pivots[2] = 1;
         var arrangementsPresent = new List<bool[]>();
         var orders = new List<int[]>();
         for (int i = 0; i < 3; i++)
