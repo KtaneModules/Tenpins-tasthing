@@ -312,7 +312,7 @@ Prefab:
         type: 2}
       propertyPath: m_Font
       value: 
-      objectReference: {fileID: 12800000, guid: 1ebe1d96973a920409b439b3a0e2bb63,
+      objectReference: {fileID: 12800000, guid: 451d40bceebd28f4d8d52ce2127536e7,
         type: 3}
     - target: {fileID: 102613506082432776, guid: 8814ea52310d2614a9feda02ec355ae4,
         type: 2}
@@ -409,6 +409,11 @@ Prefab:
         type: 2}
       propertyPath: TwitchPlaysActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 102476131169566396, guid: 8814ea52310d2614a9feda02ec355ae4,
+        type: 2}
+      propertyPath: m_Color.rgba
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8814ea52310d2614a9feda02ec355ae4, type: 2}
