@@ -187,6 +187,7 @@ public class tenpins : MonoBehaviour
     {
         if (moduleSolved)
             return;
+        bowlingBall.AddInteractionPunch(1f);
         var submmittedTime = ((int) bomb.GetTime()) % 60;
         Debug.LogFormat("[Tenpins #{0}] The bowling ball was pressed on {1}.", moduleId, submmittedTime);
         var req1 = submmittedTime % 20 > min && submmittedTime % 20 < max;
@@ -206,8 +207,12 @@ public class tenpins : MonoBehaviour
         {
             if (req1)
                 Debug.LogFormat("[Tenpins #{0}] The time was in range, but the last digit was not correct. Strike!", moduleId);
-            else
+            else if (req2)
                 Debug.LogFormat("[Tenpins #{0}] The time was not in range, but the last digit was correct. Strike!", moduleId);
+            else
+                Debug.LogFormat("[Tenpins #{0}] Neither of the conditions were met. Strike!", moduleId);
+            if (rnd.Range(0, 50) == 0)
+                Debug.LogFormat("[Tenpins #{0}] ...and not in the good way.", moduleId);
             module.HandleStrike();
         }
     }
