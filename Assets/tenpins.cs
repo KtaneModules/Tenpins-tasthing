@@ -19,7 +19,7 @@ public class tenpins : MonoBehaviour
     public Color[] colors;
     public Color[] bowlingBallColors;
     public Color gray;
-    public GameObject[] bases;
+    public TextMesh[] colorblindTexts;
 
     private int[] splits = new int[3];
     private int[] pivots = new int[3];
@@ -68,6 +68,8 @@ public class tenpins : MonoBehaviour
     {
         moduleId = moduleIdCounter++;
         bowlingBall.OnInteract += delegate () { PressBowlingBall(); return false; };
+        foreach (GameObject text in colorblindTexts.Select(x => x.gameObject))
+            text.SetActive(GetComponent<KMColorblindMode>().ColorblindModeActive);
     }
 
     void Start()
@@ -95,6 +97,7 @@ public class tenpins : MonoBehaviour
         }
         var s = "";
         var svgColorNames = new string[] { "red", "green", "blue", "cyan", "magenta", "yellow", "white" };
+        var colorblindString = "";
         for (int pin = 0; pin < 10; pin++)
         {
             var color = 0;
@@ -124,9 +127,15 @@ public class tenpins : MonoBehaviour
                 pins[pin].material.color = colors[color];
                 s += String.Format("<circle cx='{1}' cy='{2}' r='.007' fill='{0}'/>", svgColorNames[color], pins[pin].transform.localPosition.x, -pins[pin].transform.localPosition.z);
             }
+            colorblindString += "RGBCMYWK"[color];
         }
-        foreach (GameObject b in bases)
-            b.SetActive(true);
+        var cArray = colorblindString.ToCharArray();
+        Array.Reverse(cArray);
+        colorblindString = new string(cArray);
+        var row1 = colorblindString.Substring(0, 4).Reverse().Join("");
+        var row2 = colorblindString.Substring(4, 3).Reverse().Join("");
+        var row3 = colorblindString.Substring(7, 2).Reverse().Join("");
+        colorblindTexts[0].text = string.Format("{0}\n{1}\n{2}\n{3}", row1, row2, row3, colorblindString[9]);
         for (int i = 0; i < 3; i++)
             Debug.LogFormat("[Tenpins #{0}] The {1} channel has a {2}, is {3}, and has the {4} pin as pin 1. It is{5} mirrored.", moduleId, rgbNames[i], splitNames[splits[i]], inverted[i] ? "inverted" : "normal", pivotNames[pivots[i]], mirrored[i] ? "" : "n't");
         Debug.LogFormat("[Tenpins #{0}]=svg[Pins:]<svg xmlns='http://www.w3.org/2000/svg' viewBox='-.05 -.065 .3 .085' stroke='black' stroke-width='.001'>{1}</svg>", moduleId, s);
@@ -138,6 +147,7 @@ public class tenpins : MonoBehaviour
         if (stage < 3)
         {
             bowlingBallRender.material.color = bowlingBallColors[stageOrder[stage]];
+            colorblindTexts[1].text = "RGB"[stageOrder[stage]].ToString();
             Debug.LogFormat("[Tenpins #{0}] Stage {1} is {2}.", moduleId, stage + 1, rgbNames[stageOrder[stage]]);
             min = mins[stageOrder[stage]][!inverted[stageOrder[stage]] ? 0 : 1];
             max = maxs[stageOrder[stage]][!inverted[stageOrder[stage]] ? 0 : 1];
@@ -170,6 +180,8 @@ public class tenpins : MonoBehaviour
             module.HandlePass();
             Debug.LogFormat("[Tenpins #{0}] Module solved!", moduleId);
             moduleSolved = true;
+            for (int i = 0; i < 2; i++)
+                colorblindTexts[i].text = "";
             if (!splits.Any(x => x != 11))
                 audio.PlaySoundAtTransform("HOW", transform);
             else
