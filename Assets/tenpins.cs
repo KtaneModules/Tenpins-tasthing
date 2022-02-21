@@ -75,9 +75,14 @@ public class tenpins : MonoBehaviour
     void Start()
     {
         stageOrder = Enumerable.Range(0, 3).ToList().Shuffle().ToArray();
+        do
+        {
+            for (int i = 0; i < 3; i++)
+                splits[i] = rnd.Range(0, 12);
+        }
+        while (splits.Count(x => x == 11) > 1);
         for (int i = 0; i < 3; i++)
         {
-            splits[i] = rnd.Range(0, 12);
             pivots[i] = rnd.Range(0, 3);
             mirrored[i] = rnd.Range(0, 2) == 0;
             inverted[i] = rnd.Range(0, 2) == 0;
@@ -159,7 +164,7 @@ public class tenpins : MonoBehaviour
                 Debug.LogFormat("[Tenpins #{0}] The bowling ball must be pressed when the seconds digits mod 20 are greater than {1} and less than {2}.", moduleId, min, max);
             if (splits[stageOrder[stage]] != 11)
                 lastDigit = digits[pivots[stageOrder[stage]]][splits[stageOrder[stage]]];
-            else if (splits.Count(x => x == 11) == 1)
+            else
             {
                 var otherPivots = pivots.Where((x, i) => i != Array.IndexOf(splits, 11)).ToArray();
                 if (otherPivots[0] == otherPivots[1])
@@ -171,8 +176,6 @@ public class tenpins : MonoBehaviour
                 else
                     lastDigit = 4;
             }
-            else
-                lastDigit = digits[stageOrder[stage]][11];
             Debug.LogFormat("[Tenpins #{0}] The bowling ball must be pressed when the last digit of the timer is {1}.", moduleId, lastDigit);
         }
         else
@@ -200,7 +203,7 @@ public class tenpins : MonoBehaviour
         if (moduleSolved)
             return;
         bowlingBall.AddInteractionPunch(1f);
-        var submmittedTime = ((int) bomb.GetTime()) % 60;
+        var submmittedTime = ((int)bomb.GetTime()) % 60;
         Debug.LogFormat("[Tenpins #{0}] The bowling ball was pressed on {1}.", moduleId, submmittedTime);
         var req1 = submmittedTime % 20 > min && submmittedTime % 20 < max;
         var req2 = submmittedTime % 10 == lastDigit;
@@ -251,9 +254,9 @@ public class tenpins : MonoBehaviour
     };
 
     // Twitch Plays
-    #pragma warning disable 414
+#pragma warning disable 414
     private readonly string TwitchHelpMessage = "Use !{0} press <seconds>. || Seconds are to be 0-59 inclusive.";
-    #pragma warning restore 414
+#pragma warning restore 414
 
     IEnumerator ProcessTwitchCommand(string command)
     {
@@ -263,13 +266,16 @@ public class tenpins : MonoBehaviour
         {
             yield return null;
             var value = int.Parse(m.Groups[1].Value);
-            if (value >= 0 && value < 60) {
-                while ((int) bomb.GetTime() % 60 != value) {
+            if (value >= 0 && value < 60)
+            {
+                while ((int)bomb.GetTime() % 60 != value)
+                {
                     yield return null;
                     yield return "trycancel";
                 };
             }
-            else {
+            else
+            {
                 yield return "sendtochaterror Invalid time.";
                 yield break;
             }
@@ -282,7 +288,8 @@ public class tenpins : MonoBehaviour
         while (!moduleSolved)
         {
             yield return null;
-            while (!((int) bomb.GetTime() % 20 > min && ((int) bomb.GetTime()) % 20 < max && ((int) bomb.GetTime()) % 10 == lastDigit)) {
+            while (!((int)bomb.GetTime() % 20 > min && ((int)bomb.GetTime()) % 20 < max && ((int)bomb.GetTime()) % 10 == lastDigit))
+            {
                 yield return true;
                 yield return null;
             }
