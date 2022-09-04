@@ -143,7 +143,7 @@ public class tenpins : MonoBehaviour
         colorblindTexts[0].text = string.Format("{0}\n{1}\n{2}\n{3}", row1, row2, row3, colorblindString[9]);
         for (int i = 0; i < 3; i++)
             Debug.LogFormat("[Tenpins #{0}] The {1} channel has a {2}, is {3}, and has the {4} pin as pin 1. It is{5} mirrored.", moduleId, rgbNames[i], splitNames[splits[i]], inverted[i] ? "inverted" : "normal", pivotNames[pivots[i]], mirrored[i] ? "" : "n't");
-        Debug.LogFormat("[Tenpins #{0}]=svg[Pins:]<svg xmlns='http://www.w3.org/2000/svg' viewBox='-.05 -.065 .3 .085' stroke='black' stroke-width='.001'>{1}</svg>", moduleId, s);
+        Debug.LogFormat("[Tenpins #{0}]=svg[Pins:]<svg xmlns='http://www.w3.org/2000/svg' viewBox='-.05 -.025 .1 .07' stroke='black' stroke-width='.001'>{1}</svg>", moduleId, s);
         GenerateStage();
     }
 
